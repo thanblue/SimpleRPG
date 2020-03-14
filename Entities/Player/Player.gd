@@ -14,8 +14,8 @@ var mana_regeneration = 2
 signal player_stats_changed
 func _ready():
 	emit_signal("player_stats_changed", self)
-func _physics_process(delta):
 	
+func _process(delta):
 	var new_mana = min(mana + mana_regeneration * delta, mana_max)
 	if new_mana != mana:
 		mana = new_mana
@@ -24,7 +24,10 @@ func _physics_process(delta):
 	var new_health = min(health + health_regeneration * delta, health_max)
 	if new_health != health:
 		health = new_health
-		emit_signal("play_stats_changed",self)
+		emit_signal("player_stats_changed",self)
+		
+func _physics_process(delta):
+	
 	# Get player input
 	var direction: Vector2
 	direction.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -65,6 +68,7 @@ func get_animation_direction(direction : Vector2):
 	elif norm_direction.x >= 0.707:
 		return "right"
 	return "down"
+	
 func _input(event):
 	if event.is_action_pressed("attack"):
 		attack_playing = true
